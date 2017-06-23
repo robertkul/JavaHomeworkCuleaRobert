@@ -28,7 +28,7 @@ public class Calculator {
         String equal = "";
 
         try (Scanner key = new Scanner(System.in)) {
-            System.out.println("******CALCULATOR******");
+            System.out.println("******CALCULATOR******");    
 
             System.out.println("Please introduce your first number and press enter:");
             firstNumber = key.nextInt();
