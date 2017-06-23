@@ -16,6 +16,9 @@ public class JavaHomeworkCuleaRobert {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        System.out.println("Aceasta este prima linie cu mesaj");
+        System.out.println("Aceasta este a doua linie cu mesaj");
+        System.out.println("Aceasta este a treia linie cu mesaj");
     }
     
 }
