@@ -41,7 +41,7 @@
                     EBOOKS.EBOOKS_AUTHORS.ID_SSN = EBOOKS.BOOK_AUTHOR.SSN AND                              
                     EBOOKS.EBOOKS.ID_GENRE = EBOOKS.BOOK_GENRES.ID
                 </sql:query>                        
-                <h1>List the books from Electronic Books Store by Genre </h1>                         
+                <h1>List the books from Electronic Books Store by Genre</h1>                         
                 <table border="1" width="100%">
                     <tr>         
                         <th width="14%" class="thc">GENRE</th>     
