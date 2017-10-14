@@ -32,9 +32,9 @@
             <c:when test="${actualUserRole == 'user'|| actualUserRole == 'admin'}">
                 <li><a href="#">Orders</a>
                     <ul>
-                        <%-- <li><a href="./eBooksStoreOrderBookPage.jsp">Orders</a></li> --%>
-                         
-                        <li><a href="./eBooksStoreMainPage.jsp">Orders</a></li>
+                        <%-- <li><a href="./eBooksStoreOrderBookPage.jsp">Orders</a></li> --%>                         
+                        <li><a href="./eBooksStoreOrdersByRating.jsp">Orders by Rating</a></li>
+                        <li><a href="./eBooksStoreOrdersByGenre.jsp">Orders by Genre</a></li>
                     </ul>
                 </li>    
             </c:when>

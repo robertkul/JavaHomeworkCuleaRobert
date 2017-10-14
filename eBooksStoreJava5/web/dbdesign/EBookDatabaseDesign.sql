@@ -1,12 +1,12 @@
-drop table EBOOKS.EBOOKS_AUTHORS;
-drop table EBOOKS.EBOOKS_RATINGS_USERS;
-drop table EBOOKS.EBOOKS;
-drop table EBOOKS.BOOK_TYPES;
-drop table EBOOKS.USERS;
-drop table EBOOKS.BOOK_PAPER_QUALITIES;
-drop table EBOOKS.RATINGS;
-drop table EBOOKS.BOOK_GENRES;
-drop table EBOOKS.BOOK_AUTHOR;
+-- drop table EBOOKS.EBOOKS_AUTHORS;
+-- drop table EBOOKS.EBOOKS_RATINGS_USERS;
+-- drop table EBOOKS.EBOOKS;
+-- drop table EBOOKS.BOOK_TYPES;
+-- drop table EBOOKS.USERS;
+-- drop table EBOOKS.BOOK_PAPER_QUALITIES;
+-- drop table EBOOKS.RATINGS;
+-- drop table EBOOKS.BOOK_GENRES;
+-- drop table EBOOKS.BOOK_AUTHOR;
 
 create table EBOOKS.BOOK_TYPES(
 id  integer primary key,
@@ -104,13 +104,13 @@ values (4, 'Gastronomie');
 insert into EBOOKS.BOOK_GENRES(id, genre)
 values (5, 'Stiinte');
 ------------------------
-insert into EBOOKS.USERS(SSN, NAME, PASSWORD)
+insert into EBOOKS.USERS(SSN, NAME, PASSWORD, ROLE)
 values('2801010121111', 'Pop Ana', 'iniana123','user');
 
-insert into EBOOKS.USERS(SSN, NAME, PASSWORD)
+insert into EBOOKS.USERS(SSN, NAME, PASSWORD, ROLE)
 values('1801010121122', 'Popa Andrei', 'iniandrei123','user');
 
-insert into EBOOKS.USERS(SSN, NAME, PASSWORD)
+insert into EBOOKS.USERS(SSN, NAME, PASSWORD, ROLE)
 values('2800910121133', 'Popa Andra', 'iniandra123','user');
 ------------------------
 insert into EBOOKS.ROLES(ROLE)
@@ -298,3 +298,79 @@ union
 select count(1), 'BOOK_GENRES' from EBOOKS.BOOK_GENRES
 union
 select count(1), 'BOOK_AUTHOR' from EBOOKS.BOOK_AUTHOR;
+
+
+select * from EBOOKS.USERS;
+
+insert into EBOOKS.USERS(SSN, NAME, PASSWORD, ROLE)
+values('1850910121133', 'Robert Culea', 'password','admin');
+
+
+
+
+                        SELECT EBOOKS.EBOOKS.ISBN, EBOOKS.EBOOKS.DENUMIRE, EBOOKS.BOOK_TYPES.TYPE, EBOOKS.BOOK_PAPER_QUALITIES.QUALITY, EBOOKS.EBOOKS.PAGES, EBOOKS.BOOK_GENRES.GENRE, EBOOKS.EBOOKS.PRET 
+                        FROM EBOOKS.EBOOKS, 
+                             EBOOKS.BOOK_TYPES,
+                             EBOOKS.BOOK_PAPER_QUALITIES,
+                             EBOOKS.BOOK_GENRES
+                        WHERE EBOOKS.EBOOKS.ID_TYPE = EBOOKS.BOOK_TYPES.ID AND
+                              EBOOKS.EBOOKS.ID_QUALITY = EBOOKS.BOOK_PAPER_QUALITIES.ID AND
+                              EBOOKS.EBOOKS.ID_GENRE = EBOOKS.BOOK_GENRES.ID
+
+
+
+
+                        SELECT EBOOKS.EBOOKS.ISBN, EBOOKS.EBOOKS.DENUMIRE, EBOOKS.BOOK_AUTHOR.FIRST_NAME, EBOOKS.BOOK_AUTHOR.FAMILY_NAME, EBOOKS.BOOK_TYPES.TYPE, EBOOKS.BOOK_PAPER_QUALITIES.QUALITY, EBOOKS.EBOOKS.PAGES, EBOOKS.BOOK_GENRES.GENRE, EBOOKS.EBOOKS.PRET 
+                        FROM EBOOKS.EBOOKS, 
+                             EBOOKS.BOOK_AUTHOR,
+                             EBOOKS.EBOOKS_AUTHORS,
+                             EBOOKS.BOOK_TYPES,
+                             EBOOKS.BOOK_PAPER_QUALITIES,
+                             EBOOKS.BOOK_GENRES
+                        WHERE EBOOKS.EBOOKS.ID_TYPE = EBOOKS.BOOK_TYPES.ID AND
+                              EBOOKS.EBOOKS.ISBN = EBOOKS.EBOOKS_AUTHORS.ID_ISBN AND
+                              EBOOKS.EBOOKS_AUTHORS.ID_SSN = EBOOKS.BOOK_AUTHOR.SSN AND
+                              EBOOKS.EBOOKS.ID_QUALITY = EBOOKS.BOOK_PAPER_QUALITIES.ID AND
+                              EBOOKS.EBOOKS.ID_GENRE = EBOOKS.BOOK_GENRES.ID   
+
+
+SELECT TYPE FROM EBOOKS.BOOK_TYPES ORDER BY TYPE ASC
+
+
+ SELECT FIRST_NAME, FAMILY_NAME FROM EBOOKS.BOOK_AUTHOR ORDER BY FAMILY_NAME ASC 
+
+
+
+                        SELECT EBOOKS.EBOOKS.ISBN, EBOOKS.EBOOKS.DENUMIRE, EBOOKS.BOOK_AUTHOR.FIRST_NAME, EBOOKS.BOOK_AUTHOR.FAMILY_NAME,EBOOKS.BOOK_GENRES.GENRE,EBOOKS.RATINGS.RATING, EBOOKS.USERS.NAME 
+                        FROM EBOOKS.EBOOKS, 
+                             EBOOKS.BOOK_AUTHOR,
+                             EBOOKS.EBOOKS_AUTHORS,
+                             EBOOKS.BOOK_GENRES,
+                             EBOOKS.RATINGS,
+                             EBOOKS.EBOOKS_RATINGS_USERS,
+                             EBOOKS.USERS
+                        WHERE 
+                              EBOOKS.EBOOKS.ISBN = EBOOKS.EBOOKS_AUTHORS.ID_ISBN AND
+                              EBOOKS.EBOOKS_AUTHORS.ID_SSN = EBOOKS.BOOK_AUTHOR.SSN AND                              
+                              EBOOKS.EBOOKS.ID_GENRE = EBOOKS.BOOK_GENRES.ID AND
+                              EBOOKS.EBOOKS.ISBN = EBOOKS.EBOOKS_RATINGS_USERS.ID_ISBN AND
+                              EBOOKS.EBOOKS_RATINGS_USERS.ID_RATING = EBOOKS.RATINGS.ID AND
+                              EBOOKS.EBOOKS_RATINGS_USERS.ID_SSN = EBOOKS.USERS.SSN
+
+
+
+
+
+
+                    SELECT 
+                    EBOOKS.EBOOKS.ISBN, EBOOKS.EBOOKS.DENUMIRE, EBOOKS.BOOK_AUTHOR.FIRST_NAME, EBOOKS.BOOK_AUTHOR.FAMILY_NAME, EBOOKS.BOOK_GENRES.GENRE
+                    FROM 
+                    EBOOKS.EBOOKS, 
+                    EBOOKS.BOOK_AUTHOR,
+                    EBOOKS.EBOOKS_AUTHORS,
+                    EBOOKS.BOOK_GENRES
+                    WHERE 
+                    EBOOKS.EBOOKS.ISBN = EBOOKS.EBOOKS_AUTHORS.ID_ISBN AND
+                    EBOOKS.EBOOKS_AUTHORS.ID_SSN = EBOOKS.BOOK_AUTHOR.SSN AND                              
+                    EBOOKS.EBOOKS.ID_GENRE = EBOOKS.BOOK_GENRES.ID
+
