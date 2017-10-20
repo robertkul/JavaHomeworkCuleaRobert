@@ -50,7 +50,6 @@ public class eBooksStoreAdminEBooks extends HttpServlet {
             // read values from page fields
             String isbn = request.getParameter("admin_ebooks_isbn");
             String title = request.getParameter("admin_ebooks_title");
-            String author = request.getParameter("admin_ebooks_author");
             String type = request.getParameter("admin_ebooks_type");
             String quality = request.getParameter("admin_ebooks_quality");
             String pages = request.getParameter("admin_ebooks_pages");
@@ -65,7 +64,7 @@ public class eBooksStoreAdminEBooks extends HttpServlet {
                 //check driver and create connection
                 Class driverClass = Class.forName(driver);
                 connection = DriverManager.getConnection(url, user, password);
-                String DML = "INSERT INTO EBOOKS.EBOOKS VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String DML = "INSERT INTO EBOOKS.EBOOKS VALUES (?, ?, ?, ?, ?, ?, ?)";
                 pstmnt = connection.prepareStatement(DML);
                 pstmnt.setString(1, isbn);
                 pstmnt.setString(2, title);
@@ -74,12 +73,6 @@ public class eBooksStoreAdminEBooks extends HttpServlet {
                 pstmnt.setString(5, pages);
                 pstmnt.setString(6, genre);
                 pstmnt.setString(7, price);
-                pstmnt.execute();
-
-                String DML2 = "INSERT INTO EBOOKS.EBOOKS_AUTHORS (ID_ISBN, ID_SSN) VALUES ( ?, ?)";
-                pstmnt = connection.prepareStatement(DML2);
-                pstmnt.setString(1, isbn);
-                pstmnt.setString(2, author);
                 pstmnt.execute();
 
             } catch (ClassNotFoundException | SQLException ex) {
@@ -118,7 +111,7 @@ public class eBooksStoreAdminEBooks extends HttpServlet {
                 request.getRequestDispatcher("./eBooksStoreAdminEBooks.jsp").forward(request, response);
             }
         } // check push on Update button
-        else if (request.getParameter("admin_users_update") != null) { // update
+        else if (request.getParameter("admin_ebooks_update") != null) { // update
             // declare specific variables
             ResultSet resultSet = null;
             Statement statement = null;
@@ -132,46 +125,47 @@ public class eBooksStoreAdminEBooks extends HttpServlet {
                 String[] selectedCheckboxes = request.getParameterValues("admin_ebooks_checkbox");
                 String isbn2 = request.getParameter("admin_ebooks_isbn");
                 String title = request.getParameter("admin_ebooks_title");
-                String author = request.getParameter("admin_ebooks_author");
                 String type = request.getParameter("admin_ebooks_type");
                 String quality = request.getParameter("admin_ebooks_quality");
                 String pages = request.getParameter("admin_ebooks_pages");
                 String genre = request.getParameter("admin_ebooks_genre");
                 String price = request.getParameter("admin_ebooks_price");
-                // if both username and password are "" do nothing
                 if (!(("".equals(title)) && ("".equals(pages)) && ("".equals(price)))) {
                     // operate updates for all selected rows
                     for (String s : selectedCheckboxes) {
                         // realize update of all selected rows
                         String isbn = s;
-                        if ("".equals(title)) { // only pages and prices should be updated
-                            String DML = "UPDATE EBOOKS.EBOOKS SET  id_type=?,id_quality=?,pages=?,id_genre=?,pret=? WHERE ISBN=?";
+                        if ("".equals(title)) { // update all except title
+                            String DML = "UPDATE EBOOKS.EBOOKS SET ISBN=?,id_type=?,id_quality=?,pages=?,id_genre=?,pret=? WHERE ISBN=?";
                             pstmnt = connection.prepareStatement(DML);
-                            pstmnt.setString(1, type);
-                            pstmnt.setString(2, quality);
-                            pstmnt.setString(3, pages);
-                            pstmnt.setString(4, genre);
-                            pstmnt.setString(5, price);
-                            pstmnt.setString(6, isbn);
-                        } else if ("".equals(pages)) {// only titles and prices username should be updated
-                            String DML = "UPDATE EBOOKS.EBOOKS SET  denumire=?,id_type=?,id_quality=?,id_genre=?,pret=? WHERE ISBN=?";
-                            pstmnt = connection.prepareStatement(DML);
-                            pstmnt.setString(1, title);
-                            pstmnt.setString(2, type);
-                            pstmnt.setString(3, quality);
-                            pstmnt.setString(4, genre);
-                            pstmnt.setString(5, price);
-                            pstmnt.setString(6, isbn);
-                        } else if ("".equals(price)) {// only titles and pages should be updated
-                            String DML = "UPDATE EBOOKS.EBOOKS SET  denumire=?,id_type=?,id_quality=?,pages=?,id_genre=? WHERE ISBN=?";
-                            pstmnt = connection.prepareStatement(DML);
-                            pstmnt.setString(1, title);
+                            pstmnt.setString(1, isbn2);
                             pstmnt.setString(2, type);
                             pstmnt.setString(3, quality);
                             pstmnt.setString(4, pages);
                             pstmnt.setString(5, genre);
-                            pstmnt.setString(6, isbn);
-                        } else {
+                            pstmnt.setString(6, price);
+                            pstmnt.setString(7, isbn);
+                        } else if ("".equals(pages)) {// update all except pages
+                            String DML = "UPDATE EBOOKS.EBOOKS SET  isbn=?,denumire=?,id_type=?,id_quality=?,id_genre=?,pret=? WHERE ISBN=?";
+                            pstmnt = connection.prepareStatement(DML);
+                            pstmnt.setString(1, isbn2);
+                            pstmnt.setString(2, title);
+                            pstmnt.setString(3, type);
+                            pstmnt.setString(4, quality);
+                            pstmnt.setString(5, genre);
+                            pstmnt.setString(6, price);
+                            pstmnt.setString(7, isbn);
+                        } else if ("".equals(price)) {// update all except price
+                            String DML = "UPDATE EBOOKS.EBOOKS SET  isbn=?,denumire=?,id_type=?,id_quality=?,pages=?,id_genre=? WHERE ISBN=?";
+                            pstmnt = connection.prepareStatement(DML);
+                            pstmnt.setString(1, isbn2);
+                            pstmnt.setString(2, title);
+                            pstmnt.setString(3, type);
+                            pstmnt.setString(4, quality);
+                            pstmnt.setString(5, pages);
+                            pstmnt.setString(6, genre);
+                            pstmnt.setString(7, isbn);
+                        } else if ("".equals(isbn2)) {// update all except isbn
                             String DML = "UPDATE EBOOKS.EBOOKS SET  denumire=?,id_type=?,id_quality=?,pages=?,id_genre=?,pret=? WHERE ISBN=?";
                             pstmnt = connection.prepareStatement(DML);
                             pstmnt.setString(1, title);
@@ -181,10 +175,22 @@ public class eBooksStoreAdminEBooks extends HttpServlet {
                             pstmnt.setString(5, genre);
                             pstmnt.setString(6, price);
                             pstmnt.setString(7, isbn);
+                        } else {
+                            String DML = "UPDATE EBOOKS.EBOOKS SET  ISBN=?,denumire=?,id_type=?,id_quality=?,pages=?,id_genre=?,pret=? WHERE ISBN=?";
+                            pstmnt = connection.prepareStatement(DML);
+                            pstmnt.setString(1, isbn2);
+                            pstmnt.setString(2, title);
+                            pstmnt.setString(3, type);
+                            pstmnt.setString(4, quality);
+                            pstmnt.setString(5, pages);
+                            pstmnt.setString(6, genre);
+                            pstmnt.setString(7, price);
+                            pstmnt.setString(8, isbn);
                         }
+
                         boolean execute = pstmnt.execute();
                     }
-                } else { // update one or more roles for one or more users
+                } else { // update for one or more selections - only type, quality and genre
                     for (String s : selectedCheckboxes) {
                         // realize update of all selected rows
                         String isbn = s;
@@ -298,7 +304,7 @@ public class eBooksStoreAdminEBooks extends HttpServlet {
                 request.getRequestDispatcher("./eBooksStoreAdminEBooks.jsp").forward(request, response);
             }
         } // check push on Cancel button
-        else if (request.getParameter("admin_users_cancel") != null) { // cancel
+        else if (request.getParameter("admin_ebooks_cancel") != null) { // cancel
             request.getRequestDispatcher("./eBooksStoreMainPage.jsp").forward(request, response);
         }
     }
